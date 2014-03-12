@@ -1,0 +1,16 @@
+.container
+{
+	width: 70%;
+	margin: auto;
+}
+
+#output div
+{
+	display: inline-block;
+}
+
+#output div:hover
+{
+	background-color: lightblue;
+}
+

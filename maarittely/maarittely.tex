@@ -1,0 +1,99 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{parskip}
+\usepackage[top=1cm, left=1cm, bottom=1cm, right=1cm]{geometry}
+\usepackage{icomma}
+\usepackage{graphicx}
+\usepackage[finnish]{babel}
+\usepackage{url}
+
+\usepackage[sc]{mathpazo}
+\linespread{1.05}
+\usepackage[T1]{fontenc}
+
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+
+\pagestyle{empty}
+
+\begin{document}
+\begin{tabular}{|r|l|}
+	\hline
+	\begin{minipage}[t]{0.2\textwidth}
+	\hfill \textbf{}
+	\end{minipage} & 
+	\begin{minipage}[t]{0.75\textwidth}
+	Vesa Nikkilä 79798V, Juha Manninen 78687K
+	\end{minipage} \\ \hline
+	\begin{minipage}[t]{0.2\textwidth}
+	\hfill \textbf{Työn nimike}
+	\end{minipage} & 
+	\begin{minipage}[t]{0.75\textwidth}
+	HTTP-protokollaan perustuva varastonhallintajärjestelmä
+	\end{minipage} \\ \hline
+	\begin{minipage}[t]{0.2\textwidth}
+	\hfill \textbf{Työn määrittely}
+	\end{minipage} & 
+	\begin{minipage}[t]{0.75\textwidth}
+	Työssä toteutetaan varastonhallintaan tarkoitettu palvelin, palvelinrajapinta sekä käyttöliittymä, joka hyödyntää tätä rajapintaa. Rajapinta mahdollistaa uusien tuotteiden lisäämisen tietokantaan, jo olemassa olevien tuotteiden päivittämisen sekä tuotteiden poistamisen.
+	\end{minipage} \\ \hline
+	\begin{minipage}[t]{0.2\textwidth}
+	\hfill \textbf{Määritelmät}
+	\end{minipage} & 
+	\begin{minipage}[t]{0.75\textwidth}
+	Mallilla (Model) tarkoitetaan templaattia, joka määrittelee siitä luodun instanssin ominaisuudet. Dokumentilla (document) tarkoitetaan templaatin instanssia. \vspace*{0.1cm}
+	\end{minipage} \\ \hline
+	\begin{minipage}[t]{0.2\textwidth}
+	\hfill \textbf{Vaatimukset}
+	\end{minipage} & 
+	\begin{minipage}[t]{0.75\textwidth}
+	Työlle asetetaan seuraavat vaatimukset:
+	\begin{itemize}
+	\item Palvelimen rajapinta mahdollistaa CRUD (create, read, update, delete) -operaatiot kaikille varastohallinan tarjoamille malleille.
+	\item Kaikki tietokannan dokumentit voidaan listata.
+	\item Palvelu on REST-pohjainen\footnotemark[1].
+	\item Tietokantaan on mahdollista tallentaa vähintään yhden tyyppisiä dokumentteja (varastotuote, \texttt{StorageItem}). Varastotuotteille on määritelty seuraavat attribuutit: \\
+	
+	{\footnotesize
+	\begin{tabular}{@{}l l l}
+	Osan nimi & \texttt{name} & \texttt{String} \\
+	Kuvaus & \texttt{description} & \texttt{String} \\
+	Määrä varastossa & \texttt{quantity} & \texttt{Integer}
+	\end{tabular}
+	} \\
+	
+	\item Toteutuksen tulee olla sellainen, että järjestelmään on triviaalia lisätä uusia malleja.
+	\item Käyttöliittymällä voi hakea palvelimelta tietokantaan tallennettuja dokumentteja, ja niitä tulee voida muokata. Käyttöliittymä pystyy päivittämään muokatun dokumentin tietokantaan.
+	\end{itemize}
+
+	Määritellään seuraavat lisätoiminnot ajan salliessa:
+	\begin{itemize}
+	\item Dokumenttien haku tietokannasta avainsanoilla.
+	\item Käyttöliittymän automaattinen luonti.
+	\item Kaikkien pyyntöjen oikeellisuus validoidaan.
+	\end{itemize}
+	\footnotetext[1]{\url{http://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_Web_Services}}
+	\end{minipage} \\ \hline
+	\begin{minipage}[t]{0.2\textwidth}
+	\hfill \textbf{Toteutus}
+	\end{minipage} & 
+	\begin{minipage}[t]{0.75\textwidth}
+	Työ tehdään HTTP-protokollalla. Toteutus tehdään Node.js ympäristössä. Tietokantana käytetään MongoDB-tietokantaa. Palvelimen käyttöliittymä on selainpohjainen. Käyttöliittymässä hyödynnetään javascriptin yleisesti käytettyjä kirjastoja. Tietokannasta haettujen dokumenttien väliaikaiseen tarkasteluun ja muokkaukseen käytetään Backbone-javascriptkirjastoa. Pyynnöt palvelimelle tehdään asynkronisesti. \\
+	
+	Työn HTTP-palvelin toteutetaan Node.js:n express-moduulilla. MongoDB-tietokannan hallinnoinnissa käytetään mongoose-moduulia. \\
+
+	Fyysisesti HTTP- ja tietokantapalvelin sijaitsevat samalla palvelinkoneella. \\
+
+	Järjestelmän turvallisuustarkastelu sivuutetaan tässä työssä, mutta huomioidaan kuitenkin siten, että ulkopuolisia tarkastelijoita ei pääse verkkoon. Palvelimen rajapinnan käyttöön ei siis tarvitse tunnistautumista, ja sirrettävä tieto liikkuu palvelimen ja käyttöliittymän välillä salaamattomana.
+	\end{minipage} \\ \hline
+	\begin{minipage}[t]{0.2\textwidth}
+	\hfill \textbf{Testaus}
+	\end{minipage} & 
+	\begin{minipage}[t]{0.75\textwidth}
+	Jokainen palvelimen API:n tarjoama palvelu yksikkötestataan ensin ilman käyttöliittymää. Tällöin testi tehdään lähettämällä raakapyyntö ohjelmalla (\texttt{curl}), joka tukee HTTP:n eri pyyntöjä. Tämän jälkeen yksikkötestit suoritetaan myös käyttöliittymällä.
+	\end{minipage} \\ \hline
+\end{tabular}
+	
+\end{document}
+
