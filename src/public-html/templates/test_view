@@ -1,6 +1,0 @@
-<table>
-{{#attributes}}
-<tr><td>{{index}}</td><td>{{value}}</td></tr>
-{{/attributes}}
-</table>
-

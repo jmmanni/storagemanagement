@@ -5,19 +5,64 @@ require.config({
 		templates: '../../templates'
 	},
 	shim: {
-		deps: ['underscore', 'jqurey'],
-		exports: 'Backbone'
+		backbone: {
+			deps: ['underscore', 'jquery'],
+			exports: 'Backbone'
+		},
+		underscore: {
+			exports: '_'
+		},
+		bootstrap: {
+			deps: ['jquery']
+		}
 	}
 });
 
-require(['jquery', 'mustache', 'text!templates/test_view', 'backbone'],
-function($, Mustache, template_text)
+require(['jquery', 'bootstrap', 'mustache',
+'text!templates/storage_item_list_view',
+'text!templates/item_edit_modal',
+'text!templates/item_edit_view',
+'text!templates/service_panel',
+'text!templates/service_button',
+'backbone'],
+function($, bootstrap, Mustache, list_view, edit_modal, edit_view, panel_view, button_view)
 {
-	var ModelView = Backbone.View.extend({
+	var ListView = Backbone.View.extend({
 		className: 'storage-item',
 		initialize: function()
 		{
-			console.log(this.model.attributes);
+			this.$el = $(Mustache.to_html(list_view, this.model.attributes));
+		},
+		
+		
+		events: {
+			'click': function() {
+				var edit_view = new EditView({model: this.model});
+				edit_view.render().modal();
+			}
+		},
+		
+		render: function()
+		{
+			return this.$el;
+		}
+	});
+	
+	var EditView = Backbone.View.extend({
+		initialize: function()
+		{
+			this.$el = $(Mustache.to_html(edit_modal));
+		},
+		
+		events: {
+			'hidden.bs.modal': function()
+			{
+				this.$el.remove();
+			},
+			'click .btn-primary': function()
+			{
+				this.$el.modal('hide');
+			}
 		},
 		
 		render: function()
@@ -33,11 +78,31 @@ function($, Mustache, template_text)
 					});
 				});
 			})(this);
-			console.log({'attributes': attributes});
-			var c = $(Mustache.to_html(template_text,
-			{'attributes': attributes}));
-			this.$el.append(c);
-			console.log(this.$el);
+			var modal_content = $(Mustache.to_html(edit_view, {
+				'attributes': attributes
+			}));
+			this.$el.find('.modal-body').append(modal_content);
+			return this.$el;
+		}
+	});
+	
+	var CollectionView = Backbone.View.extend({
+		className: 'storage-item-list',
+		tagName: 'ul',
+		initialize: function()
+		{
+			
+		},
+		
+		render: function()
+		{
+			var self = this;
+			$.each(self.collection.models, function(i, model)
+			{
+				//console.log(list_view)
+				var item = new ListView({model: model}).render();
+				self.$el.append(item);
+			});
 			return this.$el;
 		}
 	});
@@ -54,20 +119,71 @@ function($, Mustache, template_text)
 				$.each(data, function(i, v)
 				{
 					var new_model = new Backbone.Model(v);
-					var new_view = new ModelView({
+					/*var new_view = new ModelView({
 						model: new_model
-					});
+					});*/
 				
 					collection.add(new_model);
-					$('#output').append(new_view.render());
+				});
+				var collection_view = new CollectionView({
+					collection: collection
+				});
+				
+				$('#output').append(collection_view.render());
+			}
+		});
+	}
+	
+	var get_services = function()
+	{
+		$.ajax({
+			url: 'get_services',
+			type: 'get',
+			success: function(data)
+			{
+				$.each(data, function(i, s)
+				{
+					console.log(s);
+					$('#output').append($('<pre>').append(JSON.stringify(s)));
 				});
 			}
 		});
 	}
 	
+	var create_services = function(append_point)
+	{
+		var buttons = [
+			{
+				'name': 'Storage status',
+				'description': 'List all items in storage',
+				'action': get_storage_status
+			},
+			{
+				'name': 'Add item',
+				'description': 'Add new item to storage',
+				'action': get_storage_status
+			},
+			{
+				'name': 'Get services',
+				'description': 'List all available services',
+				'action': get_services
+			}
+		];
+		var control_panel = $(Mustache.to_html(panel_view));
+				
+		$.each(buttons, function(i, button)
+		{
+			var new_button = $(Mustache.to_html(button_view, button)).click(button.action);
+			new_button.tooltip({container: 'body'});
+			control_panel.append(new_button);
+		});
+				
+		$(append_point).append(control_panel);
+	}
+	
 	$(document).ready(function()
 	{
-		$('#get_status_btn').click(get_storage_status);
+		create_services('#menu');
 	});
 });
 

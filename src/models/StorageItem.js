@@ -99,36 +99,42 @@ var handler6 = function(req, res, next)
 }
 
 var routes = [{
-	'description': 'list all storage items',
+	'name': 'list storage',
+	'description': 'lists all storage items',
 	'method': 'get',
 	'route': name,
 	'handler': handler
 },
 {
-	'description': 'get specific product from the database',
+	'name': 'get item',
+	'description': 'gets specific product from the database',
 	'method': 'get',
 	'route': name + "/:id",
 	'handler': handler2
 },
 {
-	'description': 'list all products',
+	'name': 'add item',
+	'description': 'add item to the database',
 	'method': 'post',
 	'route': name,
 	'handler': handler3
 },
 {
+	'name': 'delete item',
 	'description': 'delete specific product from the database',
 	'method': 'delete',
 	'route': name + '/:id',
 	'handler': handler4
 },
 {
+	'name': 'update item',
 	'description': 'update specific product from the database',
 	'method': 'put',
 	'route': name + '/:id',
 	'handler': handler5
 },
 {
+	'name': 'get template',
 	'description': 'get new document from the model (for creating purpose)',
 	'method': 'get',
 	'route': 'get_new/' + name,

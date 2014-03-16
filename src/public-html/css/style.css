@@ -14,3 +14,30 @@
 	background-color: lightblue;
 }
 
+h1, #menu
+{
+	text-align: center;
+}
+
+.storage-item-list li
+{
+	/*font-size: 15pt;*/
+	cursor: pointer;
+}
+
+.storage-item-list li:hover
+{
+	text-decoration: underline;
+}
+
+.storage-item
+{
+	/*display: none;*/
+}
+
+/*
+.storage-item-list li:hover > .storage-item
+{
+	display: block;
+}
+*/

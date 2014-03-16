@@ -45,6 +45,15 @@ db.once('open', function()
 				break;
 		}
 	}
+	server.get('/get_services', function(req, res, next)
+	{
+		var services = StorageItem.routes;
+		for(i in services)
+		{
+			delete services[i].handler;
+		}
+		res.send(services);
+	});
 	server.use(express.static(__dirname + '/public-html'));
 	console.log("Routes added, starting server...\n");
 
