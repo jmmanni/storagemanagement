@@ -1,6 +1,6 @@
 /* This module defines views for models */
 
-define(['backbone', 'mustache', 'app/templates'],
+define(['backbone', 'mustache', 'app/templates', 'notify'],
 function(_Backbone, Mustache, templates)
 {
 	var ListView = _Backbone.View.extend({
@@ -43,12 +43,42 @@ function(_Backbone, Mustache, templates)
 				{
 					to_be_changed.push(attr);
 				});
-				this.model.save();
+				this.model.save({}, {
+					success: function(model, res, opts)
+					{
+						$.notify(res._id + " added/updated succesfully", {
+							globalPosition: 'bottom right',
+							className: 'success'
+						});
+					},
+					error: function(model, res, opts)
+					{
+						$.notify(res.responseText, {
+							globalPosition: 'bottom right',
+							className: 'error'
+						});
+					}
+				});
 				this.$el.modal('hide');
 			},
 			'click .btn-danger': function()
 			{
-				this.model.destroy();
+				this.model.destroy({
+					success: function(model, res, opts)
+					{
+						$.notify(res._id + " removed succesfully", {
+							globalPosition: 'bottom right',
+							className: 'success'
+						});
+					},
+					error: function(model, res, opts)
+					{
+						$.notify(res.responseText, {
+							globalPosition: 'bottom right',
+							className: 'error'
+						});
+					}
+				});
 				this.$el.modal('hide');
 			}
 		},

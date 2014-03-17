@@ -53,7 +53,11 @@ var handler3 = function(req, res, next)
 		{
 			res.send(400, err.name + ": " + err.message);
 		}
-		else res.send(200, new_model._id + " added succesfully");
+		else
+		{
+			res.setHeader('Content-Type', 'application/json');
+			res.send(200, new_model);
+		}
 	});
 }
 
@@ -64,13 +68,17 @@ var handler4 = function(req, res, next)
 	{
 		if(!removed)
 		{
-			res.send(200, 'document does not exist');
+			res.send(400, 'document does not exist');
 		}
 		if(err)
 		{
 			res.send(400, err.name + ": " + err.message);
 		}
-		else res.send(200, product_id + " removed succesfully");
+		else
+		{
+			res.setHeader('Content-Type', 'application/json');
+			res.send(200, {_id: product_id});
+		}
 	});
 }
 

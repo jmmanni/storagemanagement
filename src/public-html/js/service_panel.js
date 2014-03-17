@@ -38,7 +38,7 @@ define(['jquery', 'mustache', 'app/views', 'app/models', 'app/templates', 'backb
 				$.each(data, function(i, s)
 				{
 					//console.log(s);
-					$('#output').append($('<pre>').append(JSON.stringify(s)));
+					$('#output').append($('<pre>').append(JSON.stringify(s, undefined, 2)));
 				});
 			}
 		});
