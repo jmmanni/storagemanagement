@@ -27,6 +27,11 @@ require(['jquery', 'bootstrap', 'mustache',
 'backbone'],
 function($, bootstrap, Mustache, list_view, edit_modal, edit_view, panel_view, button_view)
 {
+	var Model = Backbone.Model.extend({
+		idAttribute: "_id",
+		url: '/storageitem'
+	});
+	
 	var ListView = Backbone.View.extend({
 		className: 'storage-item',
 		initialize: function()
@@ -61,6 +66,7 @@ function($, bootstrap, Mustache, list_view, edit_modal, edit_view, panel_view, b
 			},
 			'click .btn-primary': function()
 			{
+				this.model.save();
 				this.$el.modal('hide');
 			}
 		},
@@ -81,7 +87,19 @@ function($, bootstrap, Mustache, list_view, edit_modal, edit_view, panel_view, b
 			var modal_content = $(Mustache.to_html(edit_view, {
 				'attributes': attributes
 			}));
+			
+			var model = this.model;
 			this.$el.find('.modal-body').append(modal_content);
+			this.$el.find('input[type=text]').on('change', function()
+			{
+				var s = {};
+				var i = $(this).attr('name');
+				var v = $(this).val();
+				
+				s[i] = v;
+				
+				model.set(s);
+			});
 			return this.$el;
 		}
 	});
@@ -118,7 +136,7 @@ function($, bootstrap, Mustache, list_view, edit_modal, edit_view, panel_view, b
 			{
 				$.each(data, function(i, v)
 				{
-					var new_model = new Backbone.Model(v);
+					var new_model = new Model(v);
 					/*var new_view = new ModelView({
 						model: new_model
 					});*/
@@ -143,9 +161,24 @@ function($, bootstrap, Mustache, list_view, edit_modal, edit_view, panel_view, b
 			{
 				$.each(data, function(i, s)
 				{
-					console.log(s);
+					//console.log(s);
 					$('#output').append($('<pre>').append(JSON.stringify(s)));
 				});
+			}
+		});
+	}
+	
+	var add_item = function()
+	{
+		$.ajax({
+			url: 'get_new/storageitem',
+			type: 'get',
+			success: function(data)
+			{
+				//console.log(data);
+				var new_model = new Model(data);
+				var new_view = new EditView({model: new_model});
+				new_view.render().modal();
 			}
 		});
 	}
@@ -161,7 +194,7 @@ function($, bootstrap, Mustache, list_view, edit_modal, edit_view, panel_view, b
 			{
 				'name': 'Add item',
 				'description': 'Add new item to storage',
-				'action': get_storage_status
+				'action': add_item
 			},
 			{
 				'name': 'Get services',

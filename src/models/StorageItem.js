@@ -95,7 +95,15 @@ var handler5 = function(req, res, next)
 
 var handler6 = function(req, res, next)
 {
-	res.send(new Model(default_attributes));
+	var attributes = {};
+	
+	for(attr in Model.schema.paths)
+	{
+		if(attr != '_id' && attr != '__v')
+			attributes[attr] = attr;
+	}
+	
+	res.send(attributes);
 }
 
 var routes = [{
