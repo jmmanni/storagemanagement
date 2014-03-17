@@ -77,17 +77,18 @@ var handler4 = function(req, res, next)
 var handler5 = function(req, res, next)
 {
 	var product_id = req.params.id;
+	delete req.body._id;
 	Model.update({'_id': product_id}, req.body, {multi: false},
 	function(err, updated)
 	{
 		console.log(updated);
-		if(!updated)
-		{
-			res.send(200, 'document does not exist');
-		}
 		if(err)
 		{
 			res.send(400, err.name + ": " + err.message);
+		}
+		else if(updated == undefined)
+		{
+			res.send(200, 'document does not exist');
 		}
 		else res.send(200, product_id + " updated succesfully");
 	});
