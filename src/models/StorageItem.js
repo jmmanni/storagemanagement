@@ -70,7 +70,7 @@ var handler4 = function(req, res, next)
 		{
 			res.send(400, 'document does not exist');
 		}
-		if(err)
+		else if(err)
 		{
 			res.send(400, err.name + ": " + err.message);
 		}
@@ -86,19 +86,25 @@ var handler5 = function(req, res, next)
 {
 	var product_id = req.params.id;
 	delete req.body._id;
+	delete req.body.__v;
 	Model.update({'_id': product_id}, req.body, {multi: false},
 	function(err, updated)
 	{
-		console.log(updated);
 		if(err)
 		{
 			res.send(400, err.name + ": " + err.message);
 		}
 		else if(updated == undefined)
 		{
-			res.send(200, 'document does not exist');
+			res.send(400, 'document does not exist');
 		}
-		else res.send(200, product_id + " updated succesfully");
+		
+		else
+		{
+			req.body._id = product_id;
+			res.setHeader('Content-Type', 'application/json');
+			res.send(200, req.body);
+		}
 	});
 }
 

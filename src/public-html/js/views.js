@@ -63,6 +63,15 @@ function(_Backbone, Mustache, templates)
 			},
 			'click .btn-danger': function()
 			{
+				if(this.model._id == undefined)
+				{
+					$.notify("cannot delete item without id", {
+						className: "warn",
+						globalPosition: "bottom right"
+					});
+					return;
+				}
+				
 				this.model.destroy({
 					success: function(model, res, opts)
 					{

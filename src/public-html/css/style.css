@@ -2,6 +2,7 @@
 {
 	width: 70%;
 	margin: auto;
+	margin-top: 50px;
 }
 
 #output div
@@ -41,4 +42,15 @@ h1, #menu
 	display: block;
 }
 */
+
+.login
+{
+	/*position: absolute;*/
+	display: block;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #88f;
+	text-align: center;
+}
 

@@ -25,11 +25,11 @@ require(['jquery', 'bootstrap', 'mustache',
 function($, bootstrap, Mustache, wrapper)
 {
 	var services = wrapper.service_panel;
-	
 	$(document).ready(function()
 	{
 		var service_panel = services.create_service_panel();
 		$('#menu').append(service_panel);
+		//$('body').append($(Mustache.to_html(wrapper.templates.login)));
 	});
 });
 

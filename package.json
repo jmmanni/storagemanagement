@@ -1,0 +1,20 @@
+{
+	"name": "storagemanagement",
+	"contributors": [
+		{
+			"name": "Vesa Nikkilä"
+		},
+		{
+			"name": "Juha Manninen"
+		}
+	],
+	"dependencies": {
+		"colors": ">=0.6.2",
+		"express": ">=3.5.0",
+		"mongoose": "3.8.8"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vsnikkil/storagemanagement.git"
+	}
+}
