@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var express = require('express');
 var config = require('./server_configure').config;
 var StorageItem = require('./models/StorageItem');
+var bodyParser = require('body-parser');
+var logger = require('morgan');
 
 console.log("Connecting to the database...");
 var db = mongoose.connection
@@ -24,8 +26,8 @@ db.once('open', function()
 	var server = express();
 	console.log("Created!\n");
 	
-	server.use(express.logger());
-	server.use(express.bodyParser());
+	server.use(logger());
+	server.use(bodyParser());
 	
 	var colors = require('colors');
 
