@@ -9,14 +9,6 @@ console.log("Connecting to the database...");
 var db = mongoose.connection
 mongoose.connect(config.DB_PATH);
 
-var checkAuth = function(req, res, next) {
-  if (!req.session.user_id) {
-    res.send('You are not authorized to view this page');
-  } else {
-    next();
-  }
-}
-
 db.on('error', console.error.bind(console, 'Database connection error:'));
 db.once('open', function()
 {
@@ -32,6 +24,7 @@ db.once('open', function()
 	var colors = require('colors');
 
 	console.log("Adding routes...");
+	
 	for(r in StorageItem.routes)
 	{
 		var route = StorageItem.routes[r];
@@ -64,6 +57,7 @@ db.once('open', function()
 		}
 		res.send(services);
 	});
+	
 	server.use(express.static(__dirname + '/public-html'));
 	console.log("Routes added, starting server...\n");
 

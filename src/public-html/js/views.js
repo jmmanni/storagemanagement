@@ -63,7 +63,7 @@ function(_Backbone, Mustache, templates)
 			},
 			'click .btn-danger': function()
 			{
-				if(this.model._id == undefined)
+				if(this.model.id == undefined)
 				{
 					$.notify("cannot delete item without id", {
 						className: "warn",

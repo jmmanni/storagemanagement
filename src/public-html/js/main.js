@@ -28,8 +28,8 @@ function($, bootstrap, Mustache, wrapper)
 	$(document).ready(function()
 	{
 		var service_panel = services.create_service_panel();
+		//$('.container').append($(Mustache.to_html(wrapper.templates.login)));
 		$('#menu').append(service_panel);
-		//$('body').append($(Mustache.to_html(wrapper.templates.login)));
 	});
 });
 
