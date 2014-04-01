@@ -4,13 +4,15 @@ var name = 'storageitem'
 var default_attributes = {
 	name: 'part name',
 	description: 'description',
-	quantity: 0
+	quantity: 0,
+	category: '',
 }
 
 var Schema = new mongoose.Schema({
 	name: {type: String, required: true},
 	description: {type: String, required: true},
-	quantity: {type: Number, required: true}
+	quantity: {type: Number, required: true},
+	category: {type: String, reuqired: true}
 });
 
 var Model = mongoose.model('StorageItem', Schema);

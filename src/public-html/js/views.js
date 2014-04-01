@@ -3,7 +3,7 @@
 define(['backbone', 'mustache', 'app/templates', 'notify'],
 function(_Backbone, Mustache, templates)
 {
-	var ListView = _Backbone.View.extend({
+	var ListView = Backbone.View.extend({
 		className: 'storage-item',
 		initialize: function()
 		{
@@ -24,7 +24,7 @@ function(_Backbone, Mustache, templates)
 		}
 	});
 	
-	var EditView = _Backbone.View.extend({
+	var EditView = Backbone.View.extend({
 		initialize: function()
 		{
 			this.$el = $(Mustache.to_html(templates.modal));
@@ -35,7 +35,7 @@ function(_Backbone, Mustache, templates)
 			{
 				this.$el.remove();
 			},
-			'click .btn-primary': function()
+			'click .btn-primary': function(collection)
 			{
 				var to_be_changed = [];
 				$.each(this.model.changedAttributes(),
@@ -43,6 +43,12 @@ function(_Backbone, Mustache, templates)
 				{
 					to_be_changed.push(attr);
 				});
+				
+				if(this.collection !== undefined)
+				{
+					this.collection.add(this.model);
+				}
+				
 				this.model.save({}, {
 					success: function(model, res, opts)
 					{
@@ -134,7 +140,7 @@ function(_Backbone, Mustache, templates)
 		}
 	});
 	
-	var CollectionView = _Backbone.View.extend({
+	var CollectionView = Backbone.View.extend({
 		className: 'storage-item-list',
 		tagName: 'ul',
 		initialize: function()
@@ -144,10 +150,10 @@ function(_Backbone, Mustache, templates)
 		
 		render: function()
 		{
+			this.$el.empty();
 			var self = this;
 			$.each(self.collection.models, function(i, model)
 			{
-				//console.log(list_view)
 				var item = new ListView({model: model}).render();
 				self.$el.append(item);
 			});

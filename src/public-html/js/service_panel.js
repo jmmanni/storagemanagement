@@ -3,9 +3,16 @@
 define(['jquery', 'mustache', 'app/views', 'app/models', 'app/templates', 'backbone'], function($, Mustache, views, models, templates)
 {
 	var collection = new Backbone.Collection();
+	collection.url = '/storageitem';
+	collection.model = models.StorageItem;
+	
+	var collection_view = new views.CollectionView({
+		'collection': collection
+	});
+	
 	var get_storage_status = function()
 	{
-		$.ajax({
+		/*$.ajax({
 			url: 'storageitem',
 			type: 'get',
 			success: function(data)
@@ -13,9 +20,9 @@ define(['jquery', 'mustache', 'app/views', 'app/models', 'app/templates', 'backb
 				$.each(data, function(i, v)
 				{
 					var new_model = new models.StorageItem(v);
-					/*var new_view = new ModelView({
+					var new_view = new ModelView({
 						model: new_model
-					});*/
+					});
 				
 					collection.add(new_model);
 				});
@@ -24,6 +31,22 @@ define(['jquery', 'mustache', 'app/views', 'app/models', 'app/templates', 'backb
 				});
 				
 				$('#output').append(collection_view.render());
+			}
+		});*/
+		collection.fetch({
+			success: function(collection, response, options)
+			{
+				$.notify("Fetched storage status, total " + collection.length + " items in storage", {
+					globalPosition: 'bottom right',
+					className: 'success'
+					
+				});
+				$('#output').append(collection_view.render());
+			},
+			error: function(collection, response, options)
+			{
+				console.log(response);
+				$.notify(response, "error");
 			}
 		});
 	}
@@ -51,9 +74,11 @@ define(['jquery', 'mustache', 'app/views', 'app/models', 'app/templates', 'backb
 			type: 'get',
 			success: function(data)
 			{
-				//console.log(data);
 				var new_model = new models.StorageItem(data);
-				var new_view = new views.EditView({model: new_model});
+				var new_view = new views.EditView({
+					model: new_model,
+					collection: collection
+				});
 				new_view.render().modal();
 			}
 		});

@@ -4,7 +4,10 @@ define(['backbone'], function(_Backbone)
 {
 	var StorageItemModel = Backbone.Model.extend({
 		idAttribute: "_id",
-		urlRoot: "/storageitem"
+		initialize: function()
+		{
+			//console.log(this.url);
+		}
 	});
 	
 	return {
