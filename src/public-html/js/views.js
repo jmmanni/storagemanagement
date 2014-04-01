@@ -25,9 +25,11 @@ function(_Backbone, Mustache, templates)
 	});
 	
 	var EditView = Backbone.View.extend({
-		initialize: function()
+		initialize: function(params)
 		{
-			this.$el = $(Mustache.to_html(templates.modal));
+			console.log(params);
+			var modal_template = params.modal_template || templates.edit_modal;
+			this.$el = $(Mustache.to_html(modal_template));
 		},
 		
 		events: {

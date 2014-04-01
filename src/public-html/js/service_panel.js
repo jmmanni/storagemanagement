@@ -1,6 +1,12 @@
 /* This defines client side service panel */
 
-define(['jquery', 'mustache', 'app/views', 'app/models', 'app/templates', 'backbone'], function($, Mustache, views, models, templates)
+define(['jquery',
+'mustache',
+'app/views',
+'app/models',
+'app/templates',
+'backbone'],
+function($, Mustache, views, models, templates)
 {
 	var collection = new Backbone.Collection();
 	collection.url = '/storageitem';
@@ -77,7 +83,8 @@ define(['jquery', 'mustache', 'app/views', 'app/models', 'app/templates', 'backb
 				var new_model = new models.StorageItem(data);
 				var new_view = new views.EditView({
 					model: new_model,
-					collection: collection
+					collection: collection,
+					modal_template: templates.create_modal
 				});
 				new_view.render().modal();
 			}

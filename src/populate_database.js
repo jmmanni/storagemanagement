@@ -11,21 +11,25 @@ mongoose.connect('mongodb://localhost/storage');
 var dummy_items = [
 {
 	'name': 'ruuvi',
+	'category': 'part',
 	'description': 'M6 25',
 	'quantity': 125
 },
 {
 	'name': 'naula',
+	'category': 'part',
 	'description': 'iso naula',
 	'quantity': 25
 },
 {
 	'name': 'mutteri',
+	'category': 'part',
 	'description': 'laalaa',
 	'quantity': 125
 },
 {
 	'name': 'ovi',
+	'category': 'part',
 	'description': 'puinen, 2m x 4m',
 	'quantity': 5
 }];
