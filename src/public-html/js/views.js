@@ -27,7 +27,6 @@ function(_Backbone, Mustache, templates)
 	var EditView = Backbone.View.extend({
 		initialize: function(params)
 		{
-			console.log(params);
 			var modal_template = params.modal_template || templates.edit_modal;
 			this.$el = $(Mustache.to_html(modal_template));
 		},
@@ -126,9 +125,9 @@ function(_Backbone, Mustache, templates)
 			var model = this.model;
 			this.$el.find('.modal-body').append(modal_content);
 			this.$el.find('input[type=text][name="_id"]')
-			.attr('disabled', 'true');
+			.attr('disabled', 'true').addClass('no-edit');
 			this.$el.find('input[type=text][name="__v"]')
-			.attr('disabled', 'true');
+			.attr('disabled', 'true').addClass('no-edit');
 			this.$el.find('input[type=text]').on('change', function()
 				{
 					var s = {};

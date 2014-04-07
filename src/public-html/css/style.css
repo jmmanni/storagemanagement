@@ -54,3 +54,9 @@ h1, #menu
 	text-align: center;
 }
 
+.no-edit
+{
+	background-color: pink !important;
+}
+
+
