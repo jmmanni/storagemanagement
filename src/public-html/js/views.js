@@ -7,7 +7,7 @@ function(_Backbone, Mustache, templates)
 		className: 'storage-item',
 		initialize: function()
 		{
-			this.$el = $(Mustache.to_html(templates.list_view, this.model.attributes));
+			this.$el = $(Mustache.to_html(templates.list_view_template, this.model.attributes));
 		},
 		
 		
@@ -27,7 +27,8 @@ function(_Backbone, Mustache, templates)
 	var EditView = Backbone.View.extend({
 		initialize: function(params)
 		{
-			var modal_template = params.modal_template || templates.edit_modal;
+			var modal_template = params.modal_template || templates.edit_modal_template;
+			this.modal_content_template = params.content_template || templates.edit_form_template;
 			this.$el = $(Mustache.to_html(modal_template));
 		},
 		
@@ -118,7 +119,7 @@ function(_Backbone, Mustache, templates)
 					});
 				});
 			})(this);
-			var modal_content = $(Mustache.to_html(templates.edit_view_form, {
+			var modal_content = $(Mustache.to_html(this.modal_content_template, {
 				'attributes': attributes
 			}));
 			

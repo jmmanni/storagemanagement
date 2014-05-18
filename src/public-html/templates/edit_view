@@ -1,0 +1,10 @@
+<form class="form-horizontal" role="search">
+{{#attributes}}
+<div class="form-group">
+<label for="{{index}}" class="col-sm-2 control-label">{{index}}</label>
+<div class="col-sm-10">
+<input type="text" name="{{index}}" class="form-control" placeholder="{{index}}" value="{{value}}">
+</div>
+</div>
+{{/attributes}}
+</form>

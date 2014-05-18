@@ -84,7 +84,8 @@ function($, Mustache, views, models, templates)
 				var new_view = new views.EditView({
 					model: new_model,
 					collection: collection,
-					modal_template: templates.create_modal
+					modal_template: templates.create_modal_template,
+					content_template: templates.create_form_template,
 				});
 				new_view.render().modal();
 			}
