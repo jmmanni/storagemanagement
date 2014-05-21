@@ -2,7 +2,35 @@ exports.handler = function(Model)
 {
 	return function(req, res, next)
 	{
-		Model.find({}, function(err, db_data)
+		var searched = {};
+		debugger;
+
+		if(req.query != null){
+			if(req.query.name != null)
+			{
+				searched.name = {$regex : req.query.name,$options:'i'};
+			}
+			if(req.query.category != null)
+			{
+				searched.category = {$regex : req.query.category,$options:'i'};
+			} 
+			if(req.query.description != null)
+			{
+				searched.description = {$regex : req.query.description,$options:'i'};
+			}
+			if(req.query.qtMax != null)
+			{
+				if(searched.quantity == null){searched.quantity = {}};
+				searched.quantity.$lt = req.query.qtMax;
+			}
+			if(req.query.qtMin != null)
+			{
+				if(searched.quantity == null){searched.quantity = {}};
+				searched.quantity.$gt = req.query.qtMin;
+			}
+
+		}
+		Model.find(searched, function(err, db_data)
 		{
 			if(err)
 			{
@@ -12,6 +40,8 @@ exports.handler = function(Model)
 			}
 			else res.send(db_data);
 		});
+		
+		
 	}
 }
 
@@ -121,4 +151,3 @@ exports.handler6 = function(Model)
 		res.send(attributes);
 	}
 }
-
