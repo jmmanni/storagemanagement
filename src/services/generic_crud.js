@@ -151,23 +151,3 @@ exports.handler6 = function(Model)
 		res.send(attributes);
 	}
 }
-
-exports.handler7 = function(Model)
-{
-	return function(req, res, next)
-	{
-		var product_id = req.params.id;
-		Model.findOne({'_id': product_id}, function(err, db_data)
-		{
-			if(err)
-			{
-				console.log('Database error!'.red);
-				console.log(err);
-				res.send(500, 'database error'); // Error message 500
-			}
-			else res.send(db_data);
-		});
-	}
-}
-
-
